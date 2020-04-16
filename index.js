@@ -9,9 +9,9 @@ const dates = [
                 july: "07",
                 august: "08",
                 september: "09",
-                october: 10,
-                november: 11,
-                december: 12,
+                october: "10",
+                november: "11",
+                december: "12",
                 jan: "01",
                 feb: "02",
                 mar: "03",
@@ -20,9 +20,9 @@ const dates = [
                 jul: "07",
                 aug: "08",
                 sep: "09",
-                oct: 10,
-                nov: 11,
-                dec: 12,
+                oct: "10",
+                nov: "11",
+                dec: "12",
                  1 : "01",
                  2 : "02",
                  3 : "03",
@@ -32,9 +32,9 @@ const dates = [
                  7 : "07",
                  8 : "08",
                  9 : "09",
-                 10: 10,
-                 11: 11,
-                 12: 12,
+                 10: "10",
+                 11: "11",
+                 12: "12",
                 "01": "01",
                 "02": "02",
                 "03": "03",
@@ -44,9 +44,9 @@ const dates = [
                 "07": "07",
                 "08": "08",
                 "09": "09",
-                 10: 10,
-                 11: 11,
-                 12: 12
+                 10: "10",
+                 11: "11",
+                 12: "12"
             },
             day = {
                 "1st" : "01",
@@ -69,9 +69,9 @@ const dates = [
                 "18th": 18,
                 "19th": 19,
                 "20th": 20,
-                "21th": 21,
-                "22th": 22,
-                "23th": 23,
+                "21st": 21,
+                "22nd": 22,
+                "23rd": 23,
                 "24th": 24,
                 "25th": 25,
                 "26th": 26,
@@ -129,12 +129,22 @@ const yearArray = [1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987,
     2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 
     2018, 2019, 2020];
 
-function testInputs(){
-    $('.enter').on('click',function(x){
+
+
+
+// Data arrays
+// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+    function testInputs(){
+        $('.enter').on('click',function(x){
         x.preventDefault();
         yrVal = $('.year').val();
         dyVal = $('.date').val();
         $('.validationBox').empty();
+        $('.topicValidBOX').empty();
         validateYear();
         
     })
@@ -160,10 +170,6 @@ function defineSearch(){
     else {
         getDate();
     }
-}
-
-function runYearSearchOnly(){
-    console.log('searching year only');
 }
 
 function getDate(){
@@ -214,15 +220,77 @@ function validateDate(){
             throw "Invalid date: please enter valid date";
         }
 
-         dateTobeSearched = year + monthToBeSearched + dayToBeSearched;
-         console.log(dateTobeSearched);
+         dateTobeSearched = year + monthToBeSearched + dayToBeSearched;;
+         runFullDateSearch()
+}
+
+function createRandomDate(){
+    $(".random").on('click',function(e){ 
+    e.preventDefault();
+    monthValues = Object.values(month);
+    randomMonth = monthValues[Math.floor(Math.random() * monthValues.length)]
+    dayValues = Object.values(day);
+    randomDay = dayValues[Math.floor(Math.random() * dayValues.length)]
+    randomYear = yearArray[Math.floor(Math.random() * yearArray.length)]
+    randomDate = randomYear + randomMonth + randomDay;
+    dateTobeSearched = randomDate;
+    runFullDateSearch();
+})
+}
+
+function handleTopicAndYear(){
+    $('.findTopic').on('click',function(x){
+        x.preventDefault();
+        $('.validationBox').empty();
+        $('.topicValidBOX').empty();
+        topicValue = $('.topic').val();
+        topicArray = topicValue.trim().split(" ");
+        topicYear = $('.topicYear').val();
+        validateTopicAndYear();
+        if (topicArray.length > 1){
+            keyword = topicArray.join("+");
+            
+        }
+        else {
+            keyword = topicArray.join("");
+        }
+        console.log(topicYear)
+        console.log(keyword)
+        runTopicInYearSearch();
+    })
+}
+
+function validateTopicAndYear(){
+    if ( topicValue == "" || topicYear == ""){
+        $('.topicValidBox').append(`<p>Must fill both topic and year : New York Yankees 2003 </p>`);
+        throw "must fill in both topic and year boxes";
+    }
+}
+
+function handleExampleButton(){
+    $('.example').on('click',function(e){
+        e.preventDefault();
+        $('.exampleDiv').show();
+    })
+    $('.return').on('click',function(e){
+        e.preventDefault();
+        $('.exampleDiv').hide();
+    })
+
 }
 
 function runFullDateSearch(){
     console.log('searching full date');
+    console.log(dateTobeSearched)
 }
 
+function runYearSearchOnly(){
+    console.log(`searching ${year} only`);
+}
 
+function runTopicInYearSearch(){
+    console.log(`searching ${keyword} in ${topicYear}`);
+}
 
 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -369,8 +437,11 @@ function runFullDateSearch(){
 
 
 function ready(){
-    // getDate();
+    $('.exampleDiv').hide();
     testInputs();
+    createRandomDate();
+    handleTopicAndYear();
+    handleExampleButton();
 }
 
 $(ready());

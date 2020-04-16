@@ -1,3 +1,9 @@
-.validationBox {
+.validationBox , .topicValidBox{
     color: red;
+}
+
+.exampleDiv {
+    width: 400px;
+    height: 400px;
+    background-color: aquamarine;
 }
