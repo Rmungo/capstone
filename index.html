@@ -1,0 +1,38 @@
+<!DOCTYPE html5>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css"></link>
+    <title>Capstone</title>
+</head>
+<body>
+    <form class ="dateSearch">
+    <h2>Date and year</h2>
+    <input class="date " type="text" placeholder="month day"/>
+    <input class="year" type="number" placeholder="year" />
+    <button class="enter" type="submit">Enter</button>
+    </form>
+    <div class ="validationBox"></div>
+    <form class = "topicInYearSearch">
+    <h2> Topic and year</h2>
+    <input class="topic" type="text" placeholder="topic">
+    <input class="topicYear" type="text" placeholder="year">
+    <button class="findTopic">Find Topic</button>
+    </form>
+    <form class="randomBox">
+    <h2>See Example</h2>
+    <button class="example">See Example</button>
+    <button class="random">random</button>
+    </form>
+    <div class ="news">
+    <ul class ="articles"></ul>
+    </div>
+</body>
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script src="index.js"></script>
+</html>
