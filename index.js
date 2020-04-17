@@ -131,6 +131,11 @@ const yearArray = [1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987,
 
 keywordANDYEARURL = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=ronald+regan&fq=pub_year:(1986)&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`;
 sectioNdATEANDtYPE= `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(1986-01-08)AND section_name:("movies")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`
+wikiUrl ="https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=rainbow"
+
+
+
+
 // Data info
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -278,94 +283,105 @@ function validateTopicAndYear(){
 
 // }
 function runFullDateSearch(){
-    console.log(dateTobeSearched);
+    // console.log(dateTobeSearched);
     getSports();
-    getArts();
-    getWorld();
-    getUS();
-    getTech();
-    getPres();
+    // getArts();
+    // getWorld();
+    // getUS();
+    // getTech();
+    // getPres();
     
 }
 
 function getSports(){
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(2016-11-06)AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
     .then(response => response.json())
     .then(responseJson => { 
-        console.log(responseJson);
-        for(i = 0; i < 3; i++){
-            $('.sports').append(`
-            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-    }});
-        
-}
+    console.log(responseJson);
+    for(i = 0; i < 3; i++){
+                    $('.sports').append(`
+                    <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+                    <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+            
+    }
+})
+} 
+            
+       
 
-function getArts(){
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("arts")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-    .then(response => response.json())
-    .then(responseJson => { 
-        console.log(responseJson);
-        for(i = 0; i < 3; i++){
-            $('.sports').append(`
-            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-    }});
-}
 
-function getWorld(){
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("world")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-    .then(response => response.json())
-    .then(responseJson => { 
-        console.log(responseJson);
-        for(i = 0; i < 3; i++){
-            $('.sports').append(`
-            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-    }});
-}
 
-function getUS(){
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("US")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-    .then(response => response.json())
-    .then(responseJson => { 
-        console.log(responseJson);
-        for(i = 0; i < 3; i++){
-            $('.sports').append(`
-            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-    }});
-}
+// function getArts(){
+//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("arts")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+//     .then(response => response.json())
+//     .then(responseJson => { 
+//         console.log(responseJson);
+//         for(i = 0; i < 3; i++){
+//             $('.arts').append(`
+//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+//     }});
+// }
 
-function getTech(){
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("technology")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-    .then(response => response.json())
-    .then(responseJson => { 
-        console.log(responseJson);
-        for(i = 0; i < 3; i++){
-            $('.sports').append(`
-            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-    }});
-}
+// function getWorld(){
+//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("world")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+//     .then(response => response.json())
+//     .then(responseJson => { 
+//         console.log(responseJson);
+//         for(i = 0; i < 3; i++){
+//             $('.world').append(`
+//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+//     }});
+// }
 
-function getPres(){
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=US President&fq=pub_date:(${dateTobeSearched})AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-    .then(response => response.json())
-    .then(responseJson => { 
-        console.log(responseJson);
-        for(i = 0; i < 3; i++){
-            $('.sports').append(`
-            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-    }});
-}
+// function getUS(){
+//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("US")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+//     .then(response => response.json())
+//     .then(responseJson => { 
+//         console.log(responseJson);
+//         for(i = 0; i < 3; i++){
+//             $('.us').append(`
+//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+//     }});
+// }
+
+// function getTech(){
+//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("technology")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+//     .then(response => response.json())
+//     .then(responseJson => { 
+//         console.log(responseJson);
+//         for(i = 0; i < 3; i++){
+//             $('.tech').append(`
+//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+//     }});
+// }
+
+// function getPres(){
+//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=US President&fq=pub_date:(${dateTobeSearched})AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+//     .then(response => response.json())
+//     .then(responseJson => { 
+//         console.log(responseJson);
+//         for(i = 0; i < 3; i++){
+//             $('.pres').append(`
+//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+//     }});
+// }
 
 
 
 function runYearSearchOnly(){
     console.log(`searching ${year} only`);
-}
+    url = wikiUrl + yrVal;
+    fetch(`https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=rainbow`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson)})
+    
+};
 
 function runTopicInYearSearch(){
     console.log(`searching ${keyword} in ${topicYear}`);
