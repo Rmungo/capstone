@@ -129,10 +129,9 @@ const yearArray = [1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987,
     2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 
     2018, 2019, 2020];
 
-
-
-
-// Data arrays
+keywordANDYEARURL = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=ronald+regan&fq=pub_year:(1986)&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`;
+sectioNdATEANDtYPE= `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(1986-01-08)AND section_name:("movies")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`
+// Data info
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -220,7 +219,7 @@ function validateDate(){
             throw "Invalid date: please enter valid date";
         }
 
-         dateTobeSearched = year + monthToBeSearched + dayToBeSearched;;
+         dateTobeSearched = year + "-" + monthToBeSearched + "-" + dayToBeSearched;;
          runFullDateSearch()
 }
 
@@ -232,7 +231,7 @@ function createRandomDate(){
     dayValues = Object.values(day);
     randomDay = dayValues[Math.floor(Math.random() * dayValues.length)]
     randomYear = yearArray[Math.floor(Math.random() * yearArray.length)]
-    randomDate = randomYear + randomMonth + randomDay;
+    randomDate = randomYear + "-" + randomMonth + "-" + randomDay;
     dateTobeSearched = randomDate;
     runFullDateSearch();
 })
@@ -267,22 +266,102 @@ function validateTopicAndYear(){
     }
 }
 
-function handleExampleButton(){
-    $('.example').on('click',function(e){
-        e.preventDefault();
-        $('.exampleDiv').show();
-    })
-    $('.return').on('click',function(e){
-        e.preventDefault();
-        $('.exampleDiv').hide();
-    })
+// function handleExampleButton(){
+//     $('.example').on('click',function(e){
+//         e.preventDefault();
+//         $('.exampleDiv').show();
+//     })
+//     $('.return').on('click',function(e){
+//         e.preventDefault();
+//         $('.exampleDiv').hide();
+//     })
 
-}
-
+// }
 function runFullDateSearch(){
-    console.log('searching full date');
-    console.log(dateTobeSearched)
+    console.log(dateTobeSearched);
+    getSports();
+    getArts();
+    getWorld();
+    getUS();
+    getTech();
+    getPres();
+    
 }
+
+function getSports(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson);
+        for(i = 0; i < 3; i++){
+            $('.sports').append(`
+            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+    }});
+        
+}
+
+function getArts(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("arts")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson);
+        for(i = 0; i < 3; i++){
+            $('.sports').append(`
+            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+    }});
+}
+
+function getWorld(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("world")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson);
+        for(i = 0; i < 3; i++){
+            $('.sports').append(`
+            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+    }});
+}
+
+function getUS(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("US")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson);
+        for(i = 0; i < 3; i++){
+            $('.sports').append(`
+            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+    }});
+}
+
+function getTech(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("technology")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson);
+        for(i = 0; i < 3; i++){
+            $('.sports').append(`
+            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+    }});
+}
+
+function getPres(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=US President&fq=pub_date:(${dateTobeSearched})AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson);
+        for(i = 0; i < 3; i++){
+            $('.sports').append(`
+            <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
+            <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
+    }});
+}
+
+
 
 function runYearSearchOnly(){
     console.log(`searching ${year} only`);
@@ -437,11 +516,11 @@ function runTopicInYearSearch(){
 
 
 function ready(){
-    $('.exampleDiv').hide();
+    // $('.exampleDiv').hide();
     testInputs();
     createRandomDate();
     handleTopicAndYear();
-    handleExampleButton();
+    // handleExampleButton();
 }
 
 $(ready());
