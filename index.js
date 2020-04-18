@@ -300,6 +300,7 @@ function getSports(){
     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
     .then(response => response.json())
     .then(responseJson => { 
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
     findFullParagraphs(responseJson);
 })
 };
@@ -361,11 +362,15 @@ function editAndPrintHeadlines(){
     for( i = 0; i < 3; i++){
         if (articleInfo[i].headline.main.length < 10){
             $('.articles').append(`<h1> ${articleInfo[i].headline.print_headline} </h1>
-            <p>${articleInfo[i].lead_paragraph}</p>`);
+            <p>${articleInfo[i].lead_paragraph}</p>
+            <a href=${articleInfo[i].web_url}>read more</a>
+            <img src="images/2007/11/05/us/clinton600.jpg"`);
         }
         else if (articleInfo[i].headline.main.length > 10){
          $('.articles').append(`<h2> ${articleInfo[i].headline.main} </h2>
-         <p>${articleInfo[i].lead_paragraph}</p>`);
+         <p>${articleInfo[i].lead_paragraph}</p>
+         <a href=${articleInfo[i].web_url}>read more</a>
+         `);
         }   
 }
             
@@ -376,10 +381,16 @@ function editAndPrintHeadlines(){
 function runYearSearchOnly(){
     console.log(`searching ${year} only`);
     url = wikiUrl + yrVal;
-    fetch(`https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=rainbow`)
+    fetch(`https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=1992`)
     .then(response => response.json())
     .then(responseJson => { 
-        console.log(responseJson)})
+        console.log(responseJson)
+        pageId = Object.keys(responseJson.query.pages);
+        content = responseJson.query.pages[pageId].revisions[0]['*'];
+        console.log(content)
+        
+    })
+        
     
 };
 
