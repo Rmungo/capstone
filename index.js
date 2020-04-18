@@ -149,6 +149,7 @@ wikiUrl ="https://en.wikipedia.org/w/api.php?action=opensearch&format=json&searc
         dyVal = $('.date').val();
         $('.validationBox').empty();
         $('.topicValidBOX').empty();
+        $('.articles').empty();
         validateYear();
         
     })
@@ -231,6 +232,7 @@ function validateDate(){
 function createRandomDate(){
     $(".random").on('click',function(e){ 
     e.preventDefault();
+    $('.articles').empty();
     monthValues = Object.values(month);
     randomMonth = monthValues[Math.floor(Math.random() * monthValues.length)]
     dayValues = Object.values(day);
@@ -245,6 +247,7 @@ function createRandomDate(){
 function handleTopicAndYear(){
     $('.findTopic').on('click',function(x){
         x.preventDefault();
+        $('.articles').empty();
         $('.validationBox').empty();
         $('.topicValidBOX').empty();
         topicValue = $('.topic').val();
@@ -271,105 +274,102 @@ function validateTopicAndYear(){
     }
 }
 
-// function handleExampleButton(){
-//     $('.example').on('click',function(e){
-//         e.preventDefault();
-//         $('.exampleDiv').show();
-//     })
-//     $('.return').on('click',function(e){
-//         e.preventDefault();
-//         $('.exampleDiv').hide();
-//     })
+function handleExampleButton(){
+    $('.example').on('click',function(e){
+        e.preventDefault();
+        $('.exampleDiv').show();
+    })
+    $('.return').on('click',function(e){
+        e.preventDefault();
+        $('.exampleDiv').hide();
+    })
 
-// }
+}
 function runFullDateSearch(){
-    // console.log(dateTobeSearched);
+    console.log(dateTobeSearched);
     getSports();
-    // getArts();
-    // getWorld();
-    // getUS();
-    // getTech();
-    // getPres();
+    getArts();
+    getWorld();
+    getUS();
+    getTech();
+    getPres();
     
 }
 
 function getSports(){
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(2016-11-06)AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
     .then(response => response.json())
     .then(responseJson => { 
-    console.log(responseJson);
-    for(i = 0; i < 3; i++){
-                    $('.sports').append(`
-                    <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-                    <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-            
-    }
+    findFullParagraphs(responseJson);
 })
-} 
+};
+function getArts(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("arts")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+    findFullParagraphs(responseJson);
+})
+};
+
+function getWorld(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("world")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+    findFullParagraphs(responseJson);
+})
+};
+
+function getUS(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("US")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+    findFullParagraphs(responseJson);
+})
+};
+
+function getTech(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("technology")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+    findFullParagraphs(responseJson);
+})
+};
+
+function getPres(){
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=US President&fq=pub_date:(${dateTobeSearched})AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+    findFullParagraphs(responseJson);
+})
+};
+
+function findFullParagraphs(s){
+    articleInfo = []
+for(i = 0; i < 10; i++){
+    if (s.response.docs[i].lead_paragraph.length > 200){
+        articleInfo.push(s.response.docs[i])
+    } 
+    else if (s.response.docs[i].lead_paragraph.length < 200){
+        console.log("");  
+    }
+}
+console.log(articleInfo);
+ editAndPrintHeadlines();
+};
+
+function editAndPrintHeadlines(){
+    for( i = 0; i < 3; i++){
+        if (articleInfo[i].headline.main.length < 10){
+            $('.articles').append(`<h1> ${articleInfo[i].headline.print_headline} </h1>
+            <p>${articleInfo[i].lead_paragraph}</p>`);
+        }
+        else if (articleInfo[i].headline.main.length > 10){
+         $('.articles').append(`<h2> ${articleInfo[i].headline.main} </h2>
+         <p>${articleInfo[i].lead_paragraph}</p>`);
+        }   
+}
             
-       
-
-
-
-// function getArts(){
-//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("arts")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-//     .then(response => response.json())
-//     .then(responseJson => { 
-//         console.log(responseJson);
-//         for(i = 0; i < 3; i++){
-//             $('.arts').append(`
-//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-//     }});
-// }
-
-// function getWorld(){
-//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("world")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-//     .then(response => response.json())
-//     .then(responseJson => { 
-//         console.log(responseJson);
-//         for(i = 0; i < 3; i++){
-//             $('.world').append(`
-//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-//     }});
-// }
-
-// function getUS(){
-//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("US")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-//     .then(response => response.json())
-//     .then(responseJson => { 
-//         console.log(responseJson);
-//         for(i = 0; i < 3; i++){
-//             $('.us').append(`
-//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-//     }});
-// }
-
-// function getTech(){
-//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("technology")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-//     .then(response => response.json())
-//     .then(responseJson => { 
-//         console.log(responseJson);
-//         for(i = 0; i < 3; i++){
-//             $('.tech').append(`
-//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-//     }});
-// }
-
-// function getPres(){
-//     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=US President&fq=pub_date:(${dateTobeSearched})AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
-//     .then(response => response.json())
-//     .then(responseJson => { 
-//         console.log(responseJson);
-//         for(i = 0; i < 3; i++){
-//             $('.pres').append(`
-//             <li><h1>${responseJson.response.docs[i].headline.print_headline}</h1></li>
-//             <li>${responseJson.response.docs[i].lead_paragraph}</li>`)
-//     }});
-// }
+}
 
 
 
@@ -385,158 +385,21 @@ function runYearSearchOnly(){
 
 function runTopicInYearSearch(){
     console.log(`searching ${keyword} in ${topicYear}`);
-}
-
-
-// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-// THIS IS THE BEGGINING CODE OF GETTING THE DATE AND THE FOLLWOWING CODES
-// ARE SET TO RETRIEVE DIFFERENT CODES OF VARIOUS SECTIONS AND TOPICS
-
-// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-// 
-// function getDate(){
-//     $('.enter').on('click',function(e){
-//         event.preventDefault();
-//         removeChar1 = $('.date').val();
-//         removeChar2 = removeChar1.replace("-"," ");
-//         monthDay = removeChar2.replace("/"," ");
-//         monthAndDay = monthDay.trim().split(" ");
-//         monthVal = monthAndDay[0];
-//         monthLow = monthVal.toLowerCase();
-//         dayVal = monthAndDay[1];
-//         dayLow = dayVal.toLowerCase();
-//         month = dates[0][`${monthLow}`]; 
-//         day = dates[1][`${dayLow}`];
-//         year = $('.year').val();
-//         date = year + "-" + month + "-" + day;
-//         console.log(date);
-//         fetchSports();
-//         fetchUsNews();
-//         fetchPotus();
-//         fetchTV();
-//         fetchWorld();
-//         fetchTech();
-//         fetchTeen();
-//         fetchCulture;
-//     })
-// }
-
-// function fetchSports(){
-//         sportsUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=news_desk:("sports")&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//         fetch(sportsUrl).then(response => {  
-//        return response.json()
-//     })
-//     .then(responseJson => {
-//         console.log(sportsUrl) 
-//         console.log(responseJson)
-//         showArticles(responseJson);
-//     })
-// }
-
-// function fetchTV(){
-//     tvUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=news_desk:("television")&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//     fetch(tvUrl).then(response => {  
-//    return response.json()
-// })
-// .then(responseJson => {
-//     console.log(tvUrl) 
-//     console.log(responseJson)
-//     showArticles(responseJson);
-// })
-// }
-
-// function fetchUsNews(){
-//      newsUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=news_desk:("national")&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//     fetch(newsUrl).then(response => {  
-//    return response.json()
-// })
-// .then(responseJson => {
-//     console.log(newsUrl) 
-//     console.log(responseJson)
-//     showArticles(responseJson);
-// })
-// }
-
-// function fetchPotus(){
-//     potusUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=Us-President&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//     fetch(potusUrl).then(response => {  
-//    return response.json()
-// })
-// .then(responseJson => {
-//     console.log(potusUrl) 
-//     console.log(responseJson)
-//     showArticles(responseJson);
-// })
-// }
-
-// function fetchWorld(){
-//     worldUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=news_desk:("world")&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//     fetch(worldUrl).then(response => {  
-//    return response.json()
-// })
-// .then(responseJson => {
-//     console.log(worldUrl) 
-//     console.log(responseJson)
-//     showArticles(responseJson);
-// })
-// }
-
-// function fetchTech(){
-//     techUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=news_desk:("technology")&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//     fetch(techUrl).then(response => {  
-//    return response.json()
-   
-// })
-// .then(responseJson => {
-//     console.log(techUrl) 
-//     console.log(responseJson)
-//     showArticles(responseJson);
-// })
-// }
-
-// function fetchTeen(){
-//     teenUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=news_desk:("teens")&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//     fetch(teenUrl).then(response => { 
-//    return response.json()
-// })
-// .then(responseJson => {
-//     console.log(teenUrl) 
-//     console.log(responseJson)
-//     showArticles(responseJson);
-// })
-// }
-
-// function fetchCulture(){
-//     cultureUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=news_desk:("culture")&api-key=LLThbNbzZ85Cflzj9irmt3Ghn3rxHoYu`;
-//     fetch(cultureUrl).then(response => { 
-//    return response.json()
-// })
-// .then(responseJson => {
-//     console.log(cultureUrl) 
-//     console.log(responseJson)
-//     showArticles(responseJson);
-// })
-// }
-
-
-// function showArticles(d){
-//     for(i = 0; i < 3; i++){
-//     $('.articles').append(`
-//     <li><h1>${d.response.docs[i].headline.print_headline}</h1></li>
-//     <li>${d.response.docs[i].lead_paragraph}</li>`)
-//     }
-// }
+    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${keyword}&fq=pub_year:(${topicYear})&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
+    .then(response => response.json())
+    .then(responseJson => { 
+        console.log(responseJson)
+        findFullParagraphs(responseJson)
+    
+})};
 
 
 function ready(){
-    // $('.exampleDiv').hide();
+    $('.exampleDiv').hide();
     testInputs();
     createRandomDate();
     handleTopicAndYear();
-    // handleExampleButton();
+    handleExampleButton();
 }
 
 $(ready());
