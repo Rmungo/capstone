@@ -132,10 +132,18 @@ const yearArray = [1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987,
 keywordANDYEARURL = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=ronald+regan&fq=pub_year:(1986)&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`;
 sectioNdATEANDtYPE= `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(1986-01-08)AND section_name:("movies")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`
 wikiUrl ="https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=rainbow"
+// pageId = Object.keys(responseJson.query.pages);
+        // content = responseJson.query.pages[pageId].revisions[0]['*'];
+        // console.log(content) for wiki to work
+// fetch(`https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=1992`) wiki search
+
+imdbkey = "k_WetrMyO0"
 
 
 
-
+    // fetch(`https://imdb-api.com/en/API/SearchMovie/k_WetrMyO0/Inception 2010`)  to get movie by name
+    // fetch('https://imdb-api.com/en/API/SearchName/k_WetrMyO0/Natalie Portman')  to get actress/actor by name
+    // fetch('https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=cher&api_key=dc9f1dbf50f058c14fba944b768e75e7&format=json') to get musician by name
 // Data info
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -149,7 +157,7 @@ wikiUrl ="https://en.wikipedia.org/w/api.php?action=opensearch&format=json&searc
         dyVal = $('.date').val();
         $('.validationBox').empty();
         $('.topicValidBOX').empty();
-        $('.articles').empty();
+        // $('.articles').empty();
         validateYear();
         
     })
@@ -232,7 +240,7 @@ function validateDate(){
 function createRandomDate(){
     $(".random").on('click',function(e){ 
     e.preventDefault();
-    $('.articles').empty();
+    // $('.articles').empty();
     monthValues = Object.values(month);
     randomMonth = monthValues[Math.floor(Math.random() * monthValues.length)]
     dayValues = Object.values(day);
@@ -247,7 +255,7 @@ function createRandomDate(){
 function handleTopicAndYear(){
     $('.findTopic').on('click',function(x){
         x.preventDefault();
-        $('.articles').empty();
+        // $('.articles').empty();
         $('.validationBox').empty();
         $('.topicValidBOX').empty();
         topicValue = $('.topic').val();
@@ -300,7 +308,6 @@ function getSports(){
     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
     .then(response => response.json())
     .then(responseJson => { 
-    fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("sports")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
     findFullParagraphs(responseJson);
 })
 };
@@ -381,18 +388,87 @@ function editAndPrintHeadlines(){
 function runYearSearchOnly(){
     console.log(`searching ${year} only`);
     url = wikiUrl + yrVal;
-    fetch(`https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=1992`)
-    .then(response => response.json())
-    .then(responseJson => { 
-        console.log(responseJson)
-        pageId = Object.keys(responseJson.query.pages);
-        content = responseJson.query.pages[pageId].revisions[0]['*'];
-        console.log(content)
-        
-    })
-        
+    findandDisplayAlbum();
+    findandDisplaySong();
+    findandDisplayActress();
+    findandDisplayActor();
+    findandDisplayMovie();
     
 };
+
+
+ function findandDisplayAlbum(){
+    // fetch(`https://ws.audioscrobbler.com/2.0/?method=album.search&album=${nameOfAlbum}&api_key=dc9f1dbf50f058c14fba944b768e75e7&format=json`) 
+    fetch(`https://ws.audioscrobbler.com/2.0/?method=album.search&album=The+Chronic+2001&api_key=dc9f1dbf50f058c14fba944b768e75e7&format=json`)
+    .then(response => response.json())
+    .then(responseJson => { 
+      console.log(responseJson)
+      siteUrl = responseJson.results.albummatches.album[0].url;
+      imageUrl = responseJson.results.albummatches.album[0].image[3]["#text"];
+      albumName = responseJson.results.albummatches.album[0].name;
+      albumArtist = responseJson.results.albummatches.album[0].artist;
+      $('.albums').append(`<p> ${albumName} by ${albumArtist}<a href ="${siteUrl}"><input type ="image" src ="${imageUrl}"</a> <p>Click to Listen</p>`)
+ })};
+
+ function findandDisplaySong(){
+    // fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=dc9f1dbf50f058c14fba944b768e75e7&format=json&artist=${songArtist}&track=${songName}&format=json`)
+    fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=dc9f1dbf50f058c14fba944b768e75e7&format=json&artist=cher&track=believe&format=json`)
+    .then(response => response.json())
+    .then(responseJson => { 
+      console.log(responseJson)
+      songName = responseJson.track.name;
+      songArtist = responseJson.track.artist.name;
+      songPhoto = responseJson.track.album.image[3]["#text"];
+      songProfile = responseJson.track.url;
+      $('.songs').append(`<p> ${songName} by ${songArtist}<a href ="${songProfile}"><input type ="image" src ="${songPhoto}"</a><p>Click to Listen</p>`)
+    
+    })
+ }
+
+ function findandDisplayActress(){
+    // fetch(`https://imdb-api.com/en/API/SearchName/k_WetrMyO0/${actress}`)
+    fetch('https://imdb-api.com/en/API/SearchName/k_WetrMyO0/Natalie Portman')
+    .then(response => response.json())
+    .then(responseJson => { 
+      console.log(responseJson)
+      actressName = responseJson.expression;
+      actressPhoto = responseJson.results[0].image;
+      actressId = responseJson.results[0].id;
+      actressProfile = `https://www.imdb.com/name/${actressId}/`
+      $('.actress').append(`<p>${actressName}</p> <a href ="${actressProfile}"><input type ="image" width=300px height=300px src ="${actressPhoto}"</a><p>Click to See Profile</p>`)
+    
+    })
+ }
+
+ function findandDisplayActor(){
+    // fetch(`https://imdb-api.com/en/API/SearchName/k_WetrMyO0/${actor}`)
+    fetch('https://imdb-api.com/en/API/SearchName/k_WetrMyO0/denzel washington')
+    .then(response => response.json())
+    .then(responseJson => { 
+      console.log(responseJson)
+      actorName = responseJson.expression;
+      actorPhoto = responseJson.results[0].image;
+      actorId = responseJson.results[0].id;
+      actorProfile = `https://www.imdb.com/name/${actorId}/`
+      $('.actor').append(`<p>${actorName}</p> <a href ="${actorProfile}"><input type ="image" width=300px height=300px src ="${actorPhoto}"</a><p>Click to See Profile</p>`)
+    
+    })
+ }
+
+ function findandDisplayMovie(){
+    fetch(`https://imdb-api.com/en/API/SearchMovie/k_WetrMyO0/Inception`)
+    .then(response => response.json())
+    .then(responseJson => { 
+      console.log(responseJson)
+      movieName = responseJson.expression;
+      moviePhoto = responseJson.results[0].image;
+      movieId = responseJson.results[0].id;
+      movieProfile = `https://www.imdb.com/name/${movieId}/`
+      $('.movie').append(`<p>${movieName}</p> <a href ="${movieProfile}"><input type ="image" width=300px height=300px src ="${moviePhoto}"</a><p>Click to See Profile</p>`)
+    
+    })
+
+ }
 
 function runTopicInYearSearch(){
     console.log(`searching ${keyword} in ${topicYear}`);
@@ -414,3 +490,37 @@ function ready(){
 }
 
 $(ready());
+
+
+
+
+// var tag = document.createElement('script');
+
+// tag.src = "https://www.youtube.com/iframe_api";
+// var firstScriptTag = document.getElementsByTagName('script')[0];
+// firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// var player;
+//       function onYouTubeIframeAPIReady() {
+//         player = new YT.Player('player', {
+//           height: '390',
+//           width: '440',
+//           videoId: 'd-diB65scQU',
+//         });
+//       }
+
+//       function onPlayerReady(event) {
+//         event.target.playVideo();
+//       }
+
+//       var done = false;
+//       function onPlayerStateChange(event) {
+//         if (event.data == YT.PlayerState.PLAYING && !done) {
+//           setTimeout(stopVideo, 6000);
+//           done = true;
+//         }
+//       }
+//       function stopVideo() {
+//         player.stopVideo();
+//       }
+ 
