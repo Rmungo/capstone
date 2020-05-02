@@ -1,6 +1,115 @@
-.validationBox , .topicValidBox{
-    color: red;
+* {
+    box-sizing: border-box;
+    /* border: 1px solid red; */
+
 }
+
+body {
+    background-image: url(http://lb.newsflicks.in/news-flicksv2/uploads/story/thisdayinhistorybig_6d9f02b091fd94316a64d890ba2dc797.jpg?960%7C720);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-position: fixed;
+    position: relative;
+   
+    
+}
+
+.dateSearch {
+    width: 575px;
+    position: relative;
+    left: 7%;
+    top: 35%;
+}
+
+.date {
+    position: relative;
+    right: 20px;
+    height: 30px;
+    width: 55%;
+    font-size: 20px;
+    border-radius: 10px;
+}
+.year {
+    height: 30px;
+    width: 20%;
+    font-size: 20px;
+    border-radius: 10px;
+}
+.enter {
+    height: 25px;
+    border-radius: 10px;
+    position: relative;
+    left: 5px;
+}
+
+.randomBox {
+    position: relative;
+    display: flex;
+    width: 200px;
+    justify-content: space-evenly;
+    margin: 0;
+    left: 25%;
+    top: 35%;
+}
+
+ .random {
+    position: relative;
+    height: 25px;
+    border-radius: 10px;
+    left: 15px;
+}
+
+.topicInYearSearch {
+    width: 490px;
+    position: relative;
+    left: 64%;
+    top: -9;
+}
+
+.topic , .topicYear , .findTopic {
+    height: 18px;
+    position: relative;
+    right: 25px;
+}
+
+.validationBox {
+    color: red;
+    left: 25%;
+    top: 35%; 
+    background-color: wheat;
+    width: 20%;
+    height: 30px;
+    text-align: center;
+    border-radius: 10px;
+    width: 450px;
+}
+
+.validationBox1 {
+    color: red;
+    left: 25%;
+    top: 35%; 
+    background-color: wheat;
+    width: 20%;
+    height: 50px;
+    text-align: center;
+    border-radius: 10px;
+    width: 450px;
+    height: 190px;
+}
+
+.error1 {
+    position: relative;
+    top: 5px;
+    width: 450px;
+}
+
+.error2 {
+    position: relative;
+    top: 10px;
+    width: 450px;
+}
+
 
 .exampleDiv {
     width: 400px;
@@ -8,7 +117,231 @@
     background-color: aquamarine;
 }
 
-img {
+.presPic {
     width: 300px;
     height: 300px;
+}
+
+.hidden {
+    display: none;
+}
+
+.articles {
+    width: 52.5%;
+    background-color: ghostwhite;
+    /* height: 1610px; */
+    position: relative;
+    left: 1%;
+    
+}
+
+.yearInfo {
+    width: 57%;
+    background-color: ghostwhite;
+    /* height: 1610px; */
+    position: relative;
+    left: 1%;
+}
+
+.articleSection {
+    display: flex;
+    justify-content: space-evenly;
+    overflow: hidden;
+    flex-wrap: wrap;
+    
+}
+
+.sectionArticle {
+    display: flex;
+    flex-direction: column;
+    width: 212px;
+    height: 300px;
+    font-size: 12px;
+    margin-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.articleHeadline {
+    font-size: 16px;
+}
+
+.articleLinks {
+    position: relative;
+    left: 45px;
+}
+
+.sectionName {
+    position: absolute;
+    left: 15px;
+    font-size: 12px;
+    color: red;
+}
+
+.articleDash , .articleDash1 {
+    position: relative;
+    left: 15px;
+}
+
+.articleDash1 {
+    bottom: 35px;
+}
+
+.pageDate {
+    font-size: 12px ;
+    position: absolute;
+    right: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.return {
+    position: relative;
+    left: 1000px;
+    top: 100px;
+}
+
+
+ul {
+    list-style: none;
+}
+
+ .presPic {
+ position: absolute;
+ left:0;
+}
+
+.presName {
+    position: relative;
+    top: 310px;
+    left: 55px;
+}
+
+.presInfo {
+    width: 375px;
+    position: relative;
+    left: 275px;
+    font-size: 18px;
+    line-height: 27px;
+    top: 10px;
+}
+
+.yrSection {
+    position: absolute;
+    left: 65%;
+}
+
+.yrYear {
+    position: absolute;
+    right: 5px;
+    top: -5px;
+}
+
+.sportsChamps {
+    display: flex;
+    position: relative;
+    top: 40px;
+}
+
+.champPhoto {
+    width: 200px;
+    height: 250px;
+}
+
+ .presPic {
+    width: 300px;
+    height: 300px;
+}
+
+.sportsPic , .moviePoster {
+    width: 200px;
+    height: 200px;
+}
+
+.champteam {
+    position: relative;
+    right: 15px;
+}
+
+.movie , .albums {
+/* border: 1px solid red; */
+display: flex;
+flex-wrap: wrap;
+width: 750px;
+/* height: 700px; */
+position: relative;
+top: 60px;
+
+}
+
+.yearTopic{
+    display: flex;
+    flex-wrap: wrap;
+    width: 700px;
+    min-height: 100px;
+ }
+
+.topicArticle {
+    display: flex;
+    flex-direction: column;
+    width: 212px;
+    height: 310px;
+    font-size: 12px;
+    margin-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow: hidden;
+}
+
+.albumCover , .actorPhoto {
+    width: 200px;
+    height: 200px;
+}
+
+.albumTitle {
+    width: 150px;
+    overflow: hidden;
+}
+
+.movieDisplay , .actorDisplay{
+    display:flex;
+    flex-direction: column;
+}
+
+.movieTitle {
+    width:200px;
+    flex-wrap:wrap;
+}
+
+.actor {
+/* border: 1px solid red; */
+display: flex;
+flex-wrap: wrap;
+width: 750px;
+position: relative;
+top: 60px;
+}
+
+.yearSection {
+    position: absolute;
+    left:40%;
+    top: -15px;
+    text-decoration: underline;
+}
+
+.presYear {
+    position: absolute;
+    left:62.5%;
+    top: -5px;
+    text-decoration: underline;
+}
+
+.topicKeyword {
+    text-transform: capitalize;
+}
+
+.notFound {
+    position: relative;
+    top: 30px;
+    left: 160px;
 }

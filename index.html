@@ -7,37 +7,43 @@
     <title>Capstone</title>
 </head> 
 <body>
-    <form class ="dateSearch">
-    <h2>Date and year</h2>
-    <input class="date " type="text" placeholder="month day"/>
-    <input class="year" type="number" placeholder="year" />
-    <button class="enter" type="submit">Enter</button>
-    </form>
-    <div class ="validationBox"></div>
     <form class = "topicInYearSearch">
-    <h2> Topic and year</h2>
-    <input class="topic" type="text" placeholder="topic">
-    <input class="topicYear" type="text" placeholder="year">
+    <input class="topic" type="text" value="hjgjj">
+    <input class="topicYear" type="text" value="1992">
     <button class="findTopic">Find Topic</button>
     </form>
     <div class ="topicValidBox"></div>
-    <form class="randomBox">
-    <h2>See Example</h2>
-    <button class="example">See Example</button>
-    <button class="random">random</button>
+    <form class ="dateSearch">
+      <input class="date " type="text"/>
+      <input class="year" type="number" value = "1985" />
+      <button class="enter" type="submit">Go!</button>
+      <button class="random">Random</button>
+      <div class ="validationBox "></div>
+      <div class ="validationBox1 "></div>
     </form>
-    <!-- <div class ="exampleDiv"> -->
+      
+     
+    <!-- <div class ="exampleDiv "> -->
 
-      <!-- <button class ="return">return home</button> -->
+      <!-- <button class ="return ">return home</button> -->
     </div>
-    
-    <div class ="articles">
-    
-    <div class ="sports"></div>
-    
-    <div class = "president"></div>
-    <div class = "songs"></div>
-    <div class = "albums"></div>
+    <button class ="return hidden">Home</button>
+    <div class ="articles hidden ">
+      <div class="pres articleSection"></div>
+      <div class="sportsArticles articleSection"></div>
+      <div class ="national articleSection"></div>
+      <div class ="world articleSection"></div>
+      <div class ="arts articleSection"></div>
+      <div class ="yearTopic"></div>
+    </div>
+ 
+    <div class = "yearInfo hidden">
+    <div class = "President hidden"></div>
+    <div class ="sportsChamps hidden"></div>
+    <div class = "movie "></div>
+    <div class = "actor hidden"></div>
+    <div class = "albums"></div> 
+  </div>
 </body>
 
 <script
