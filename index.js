@@ -1095,8 +1095,8 @@ function handleTopicAndYear(){
         else {
             keyword = topicArray.join("");
         }
-        console.log(topicYear)
-        console.log(keyword)
+        // console.log(topicYear)
+        // console.log(keyword)
         runTopicInYearSearch();
     })
 }
@@ -1222,7 +1222,7 @@ function getNational(){
     fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=pub_date:(${dateTobeSearched})AND section_name:("US")AND document_type:("article")&api-key=00ag7P5IOG0j0x72NeaRMSnhusKQ2IEB`)
     .then(response => response.json())
     .then(responseJson => { 
-    console.log(responseJson)
+    // console.log(responseJson)
     newClass = "national"
     findFullParagraphs(responseJson);
 })
@@ -1268,8 +1268,7 @@ function editAndPrintHeadlines(s){
 
 function runYearSearchOnly(){
     takeYearandFindTopMovies();
-    findTopHipHopAlbumsofYear(); 
-    findTopPopAlbumsofYear();
+    findAlbumsofYear(); 
     getPresident();
     AddClassToImg();    
 };
@@ -1388,10 +1387,12 @@ function sportsByYear(){
   };
  
 
-    
 
- function findandDisplayAlbum(){
-    fetch(`https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=dc9f1dbf50f058c14fba944b768e75e7&artist=${who}&album=${what}&format=json`) 
+
+ function findandDisplayAlbum(s){
+     console.log("find and display working")
+     for (i = 0; i < s.length; i++){
+    fetch(`https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=dc9f1dbf50f058c14fba944b768e75e7&artist=${s[0].artist}&album=${s[0].title}&format=json`) 
       .then(response => response.json())
       .then(responseJson => { 
     //   console.log(responseJson)
@@ -1406,26 +1407,39 @@ function sportsByYear(){
             console.log('skip album')
       }
       else if (siteUrl !== ""){
-        //   albumArray.push(`<ul class= "albumDisplay" <li><p class="albumTitle"> ${albumName} by</li> <li> ${albumArtist}</li> <li><a href ="${siteUrl}"><input type ="image" class ="albumCover" src ="${imageUrl}"</a></li> <p>Click to Listen</p>`);
-        //  setArray = new Set(albumArray);
-        //   newAlbumArray = [...setArray];
-        $('.albums').append(`<ul class= "albumDisplay" <li><p class="albumTitle"> ${albumName} by</li> <li> ${albumArtist}</li> <li><a href ="${siteUrl}"><input type ="image" class ="albumCover" src ="${imageUrl}"</a></li><li> <p>Click to Listen</p></li>`);
-         
- }})};
+          albumArray.push(`<ul class= "albumDisplay" <li><p class="albumTitle"> ${albumName} by</li> <li> ${albumArtist}</li> <li><a href ="${siteUrl}"><input type ="image" class ="albumCover" src ="${imageUrl}"</a></li> <p>Click to Listen</p>`);
+         setArray = new Set(albumArray);
+          newAlbumArray = [...setArray];
+          console.log(newAlbumArray)
+        // appendAlbums(newAlbumArray);
+ }})}
+    
+}
+
+ function appendAlbums(x){
+    console.log('APPEND working')
+     for(i = 0; i < x.length; i++){
+    $('.albums').append(x[i]);
+ }
+ }
 
  function findandDisplayActor(){
     for(i = 0; i < newActorArray.length; i++){
-    console.log('working')
+    // console.log('working')
     fetch(`https://imdb-api.com/en/API/SearchName/k_WetrMyO0/${newActorArray[i]}`)
     .then(response => response.json())
     .then(responseJson => { 
-      console.log(responseJson)
+    //   console.log(responseJson)
       actorName = responseJson.expression;
       actorPhoto = responseJson.results[0].image;
       actorId = responseJson.results[0].id;
-      actorProfile = `https://www.imdb.com/name/${actorId}/`
-      $('.actor').append(`<ul class = "actorDisplay"><li><p class = "actorName">${actorName}</p></li><li><img class="actorPhoto" src ="${actorPhoto}"></li><a href = "${actorProfile}">Click to See Profile</a>`)
-    
+      actorProfile = `https://www.imdb.com/name/${actorId}/`;
+      if (actorPhoto.search("nopicture") === -1){
+        $('.actor').append(`<ul class = "actorDisplay"><li><p class = "actorName">${actorName}</p></li><li><img class="actorPhoto" src ="${actorPhoto}"></li><a href = "${actorProfile}">Click to See Profile</a>`)
+      }
+      else {
+          console.log('photo stopped')
+      }
     }) }
     // showAlbums(newAlbumArray);
  }
@@ -1442,13 +1456,14 @@ function sportsByYear(){
     fetch(`https://imdb-api.com/en/API/SearchMovie/k_WetrMyO0/${movieArray[i]}`)
     .then(response => response.json())
     .then(responseJson => { 
-      console.log(responseJson)
+    //   console.log(responseJson)
       movieName = responseJson.expression;
       moviePhoto = responseJson.results[0].image;
       movieId = responseJson.results[0].id;
-      movieProfile = `https://www.imdb.com/name/${movieId}/`
+      movieProfile = `https://www.imdb.com/title/${movieId}/`
       $('.movie').append(`<ul class ="movieDisplay"><li><p class = "movieTitle">${movieName}</p></li><li><img class="moviePoster" width=300px height=300px src ="${moviePhoto}"></li><a href = "${movieProfile}">Click to See Profile</a></p></ul>`)
     })}};
+
 
  function takeYearandFindTopMovies(){
         $('.movie').append(`<p class = "yearSection">Top Movies of ${year}</p>`);
@@ -1456,7 +1471,7 @@ function sportsByYear(){
         fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_year=${year}&sort_by=popularity.desc&language=en-US&api_key=642d833884c9ea9b7de7fb3eb5dae9bd`) 
         .then(response => response.json())
         .then(responseJson => { 
-        console.log(responseJson)
+        // console.log(responseJson)
         movieId1 = responseJson.results[0].id;
         movieId2 = responseJson.results[1].id;
         movieId3 = responseJson.results[2].id;
@@ -1470,7 +1485,7 @@ function sportsByYear(){
         movieArray.push(responseJson.results[3].title)
         movieArray.push(responseJson.results[4].title)
         movieArray.push(responseJson.results[5].title)
-        console.log(movieArray);
+        // console.log(movieArray);
         findActorsFromTopMovies()
         findandDisplayMovie();
         
@@ -1481,7 +1496,7 @@ function findActorsFromTopMovies(){
     fetch(`https://api.themoviedb.org/3/movie/${movieId1}/credits?api_key=642d833884c9ea9b7de7fb3eb5dae9bd&language=en-US`) 
         .then(response => response.json())
         .then(responseJson => { 
-        console.log(responseJson)
+        // console.log(responseJson)
         actorArray= [];
         actor1Movie1 = responseJson.cast[0].name;
         actor2Movie1 = responseJson.cast[1].name;
@@ -1492,7 +1507,7 @@ function findActorsFromTopMovies(){
 fetch(`https://api.themoviedb.org/3/movie/${movieId2}/credits?api_key=642d833884c9ea9b7de7fb3eb5dae9bd&language=en-US`) 
 .then(response => response.json())
 .then(responseJson => { 
-console.log(responseJson)
+// console.log(responseJson)
 actor1Movie2 = responseJson.cast[0].name;
 actor2Movie2 = responseJson.cast[1].name;
 actorArray.push(actor1Movie2)
@@ -1501,7 +1516,7 @@ actorArray.push(actor2Movie2)
 fetch(`https://api.themoviedb.org/3/movie/${movieId3}/credits?api_key=642d833884c9ea9b7de7fb3eb5dae9bd&language=en-US`) 
 .then(response => response.json())
 .then(responseJson => { 
-console.log(responseJson)
+// console.log(responseJson)
 actor1Movie3 = responseJson.cast[0].name;
 actor2Movie3= responseJson.cast[1].name;
 actorArray.push(actor1Movie3)
@@ -1510,7 +1525,7 @@ actorArray.push(actor2Movie3)
 fetch(`https://api.themoviedb.org/3/movie/${movieId4}/credits?api_key=642d833884c9ea9b7de7fb3eb5dae9bd&language=en-US`) 
 .then(response => response.json())
 .then(responseJson => { 
-console.log(responseJson)
+// console.log(responseJson)
 actor1Movie4 = responseJson.cast[0].name;
 actor2Movie4 = responseJson.cast[1].name;
 actorArray.push(actor1Movie4)
@@ -1519,7 +1534,7 @@ actorArray.push(actor2Movie4)
 fetch(`https://api.themoviedb.org/3/movie/${movieId5}/credits?api_key=642d833884c9ea9b7de7fb3eb5dae9bd&language=en-US`) 
 .then(response => response.json())
 .then(responseJson => { 
-console.log(responseJson)
+// console.log(responseJson)
 actor1Movie5 = responseJson.cast[0].name;
 actor2Movie5 = responseJson.cast[1].name;
 actorArray.push(actor1Movie5)
@@ -1528,29 +1543,34 @@ actorArray.push(actor1Movie5)
 fetch(`https://api.themoviedb.org/3/movie/${movieId6}/credits?api_key=642d833884c9ea9b7de7fb3eb5dae9bd&language=en-US`) 
 .then(response => response.json())
 .then(responseJson => { 
-console.log(responseJson)
+// console.log(responseJson)
 actor1Movie6 = responseJson.cast[0].name;
 actor2Movie6 = responseJson.cast[1].name;
 actorArray.push(actor1Movie6)
 actorArray.push(actor2Movie6)
 setArray = new Set(actorArray);
 newActorArray = [...setArray];
-console.log(newActorArray)
+// console.log(newActorArray)
 findandDisplayActor();
 })
 }
 
-function findTopHipHopAlbumsofYear(){
+
+albumInfoArray = [];
+
+function findAlbumsofYear(){
     albumArray = [];
+    labels = ['sony','warner','universal','sony','warner','universal','sony','warner','universal','sony','warner','universal'];
+    genre = ['hip hop', 'hip hop', 'hip hop','hip hop','pop','pop','pop','pop','rock','rock','rock','rock']
     $('.albums').append(`<p class = "yearSection">Albums released in ${year}</p>`)
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=sony&country=US&genre=hip hop&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
+    for (i = 0; i < 12; i++){
+    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=${labels[i]}&country=US&genre=${genre[i]}&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
     .then(response => response.json())
     .then(responseJson => { 
-    for (i = 0; i < 2; i++){
     arrayLength = responseJson.results.length;
     randomNumber = Math.floor(Math.random()*arrayLength);
     styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
+    checkArray = [];
     for(i = 0; i < styleArray.length; i++){
     if (styleArray[i] === "Remastered"){
                     checkArray.push('yes')
@@ -1590,590 +1610,19 @@ function findTopHipHopAlbumsofYear(){
     splitTitle = titleSearch.split("(");
     titleSearch = splitTitle[0];
     who = artistSearch.trim();
-    who = artistSearch.trim();
     what = titleSearch.trim();
-    findandDisplayAlbum();
+    albumObject = {
+            artist: who,
+            title: what,
+    };
     }
-     } })
-
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=universal&country=US&genre=hip hop&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-  
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-    
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-    }})
-
+     albumInfoArray.push(albumObject);
      
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=warner&country=US&genre=hip hop&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-   
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=sony&country=US&genre=hip hop&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-    
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-     } })
-
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=universal&country=US&genre=hip hop&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-    
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-    
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-    }})
-
-     
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=warner&country=US&genre=hip hop&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-   
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-    }})
-}})};
-
-
-function findTopPopAlbumsofYear(){
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=sony&country=US&genre=rock&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-    }})
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=universal&country=US&genre=rock&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-         .then(response => response.json())
-        .then(responseJson => { 
-        for (i = 0; i < 2; i++){
-        arrayLength = responseJson.results.length;
-        randomNumber = Math.floor(Math.random()*arrayLength);
-        styleArray = responseJson.results[randomNumber].format;
-        checkArray = []
-        for(i = 0; i < styleArray.length; i++){
-        if (styleArray[i] === "Remastered"){
-                        checkArray.push('yes')
-                }
-        else if (styleArray[i] === "Reissue"){
-                        checkArray.push('yes')
-                }
-        else if (styleArray[i] === "Repress"){
-                        checkArray.push('yes')
-                }
-        else if (styleArray[i] === "Limited Edition"){
-                        checkArray.push('yes')
-                }
-        else { 
-                    checkArray.push('no');
-        }
-        }
-        wrongDate = checkArray.find(function(x){
-            if (x === "yes")
-            return true
-        })
-        if (wrongDate === "yes"){
-            throw 'album has wrong date'
-        }
-        else {
-        name = responseJson.results[randomNumber].title;
-        lowercaseName = name.toLowerCase();
-        removeDashes = lowercaseName.replace('featuring', '-');
-        removeFeat = removeDashes.replace('feat.', '-');
-        splitString = removeFeat.split("-");
-        removeParens = splitString[0].split("(");
-        removeStars = removeParens[0].split("*");
-        artistSearch = removeStars[0].trim(); 
-        titleSearch = splitString[splitString.length -1].trim();
-        splitTitle = titleSearch.split("(");
-        titleSearch = splitTitle[0];
-        who = artistSearch.trim();
-        who = artistSearch.trim();
-        what = titleSearch.trim();
-        findandDisplayAlbum();
-        }
-        }})    
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=warner&country=US&genre=rock&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=sony&country=US&genre=rock&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-    }})
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=universal&country=US&genre=rock&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-         .then(response => response.json())
-        .then(responseJson => { 
-        for (i = 0; i < 2; i++){
-        arrayLength = responseJson.results.length;
-        randomNumber = Math.floor(Math.random()*arrayLength);
-        styleArray = responseJson.results[randomNumber].format;
-        checkArray = []
-        for(i = 0; i < styleArray.length; i++){
-        if (styleArray[i] === "Remastered"){
-                        checkArray.push('yes')
-                }
-        else if (styleArray[i] === "Reissue"){
-                        checkArray.push('yes')
-                }
-        else if (styleArray[i] === "Repress"){
-                        checkArray.push('yes')
-                }
-        else if (styleArray[i] === "Limited Edition"){
-                        checkArray.push('yes')
-                }
-        else { 
-                    checkArray.push('no');
-        }
-        }
-        wrongDate = checkArray.find(function(x){
-            if (x === "yes")
-            return true
-        })
-        if (wrongDate === "yes"){
-            throw 'album has wrong date'
-        }
-        else {
-        name = responseJson.results[randomNumber].title;
-        lowercaseName = name.toLowerCase();
-        removeDashes = lowercaseName.replace('featuring', '-');
-        removeFeat = removeDashes.replace('feat.', '-');
-        splitString = removeFeat.split("-");
-        removeParens = splitString[0].split("(");
-        removeStars = removeParens[0].split("*");
-        artistSearch = removeStars[0].trim(); 
-        titleSearch = splitString[splitString.length -1].trim();
-        splitTitle = titleSearch.split("(");
-        titleSearch = splitTitle[0];
-        who = artistSearch.trim();
-        who = artistSearch.trim();
-        what = titleSearch.trim();
-        findandDisplayAlbum();
-        }
-        }})    
-
-    fetch(`https://api.discogs.com/database/search?format=album&year=${year}&label=warner&country=US&genre=rock&key=HzodnTCcDEFaCqjRullZ&secret=UqjoyYnSIUzfehnLWBlqDuqfipjVGwSE`) 
-    .then(response => response.json())
-    .then(responseJson => { 
-    for (i = 0; i < 2; i++){
-    arrayLength = responseJson.results.length;
-    randomNumber = Math.floor(Math.random()*arrayLength);
-    styleArray = responseJson.results[randomNumber].format;
-    checkArray = []
-    for(i = 0; i < styleArray.length; i++){
-    if (styleArray[i] === "Remastered"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Reissue"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Repress"){
-                    checkArray.push('yes')
-            }
-    else if (styleArray[i] === "Limited Edition"){
-                    checkArray.push('yes')
-            }
-    else { 
-                checkArray.push('no');
-    }
-    }
-    wrongDate = checkArray.find(function(x){
-        if (x === "yes")
-        return true
-    })
-
-    if (wrongDate === "yes"){
-        throw 'album has wrong date'
-    }
-    else {
-    name = responseJson.results[randomNumber].title;
-    lowercaseName = name.toLowerCase();
-    removeDashes = lowercaseName.replace('featuring', '-');
-    removeFeat = removeDashes.replace('feat.', '-');
-    splitString = removeFeat.split("-");
-    removeParens = splitString[0].split("(");
-    removeStars = removeParens[0].split("*");
-    artistSearch = removeStars[0].trim(); 
-    titleSearch = splitString[splitString.length -1].trim();
-    splitTitle = titleSearch.split("(");
-    titleSearch = splitTitle[0];
-    who = artistSearch.trim();
-    who = artistSearch.trim();
-    what = titleSearch.trim();
-    findandDisplayAlbum();
-    }
-}})}})
-}
+    })}
+    console.log('one');
+    console.log(albumInfoArray);
+    findandDisplayAlbum(albumInfoArray);
+};
 
 function runTopicInYearSearch(){
     $('.articles').show();

@@ -141,12 +141,13 @@ body {
     /* height: 1610px; */
     position: relative;
     left: 1%;
+    padding-bottom: 50px;
 }
 
 .articleSection {
     display: flex;
     justify-content: space-evenly;
-    overflow: hidden;
+    /* overflow: hidden; */
     flex-wrap: wrap;
     
 }
@@ -155,7 +156,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 212px;
-    height: 300px;
+    max-height: 350px;
     font-size: 12px;
     margin-top: 20px;
     padding-left: 15px;
@@ -299,7 +300,7 @@ top: 60px;
 }
 
 .albumTitle {
-    width: 150px;
+    width: 200px;
     overflow: hidden;
 }
 
@@ -344,4 +345,9 @@ top: 60px;
     position: relative;
     top: 30px;
     left: 160px;
+}
+
+.articleLead {
+    max-height: 200px;
+    overflow: hidden;
 }
